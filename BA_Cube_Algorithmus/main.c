@@ -9,37 +9,24 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include "Top_Cross.h"
 #include <string.h>
 #include <unistd.h>
 #include <sys/select.h>
 #include <termios.h>
 
+#define RUN_MACOS  1
+//#define RUN_EV3    1
 
-//0- weiss 1-blau 2-gelb 3-gruen 4-rot 5-orga
-unsigned char color_data[6][9]=
-{
-    
-    
-    {0,0,0,0,0,0,0,0,0 },  //0
-    {1,1,1,1,1,1,1,1,1 },
-    {2,2,2,2,2,2,2,2,2 },
-    {3,3,3,3,3,3,3,3,3 },
-    {4,4,4,4,4,4,4,4,4 },
-    {5,5,5,5,5,5,5,5,5 }                               //initialisieren color_data
-    
-    //    {0,0,3,0,0,3,0,0,3 },  //0
-    //    {1,1,0,1,1,0,1,1,0 },
-    //    {2,2,1,2,2,1,2,2,1 },
-    //    {3,3,2,3,3,2,3,3,2 },
-    //    {4,4,4,4,4,4,4,4,4 },
-    //    {5,5,5,5,5,5,5,5,5 }
-    /*      {0,0,0,0,0,0,0,0,0 },  //0
-     {5,5,5,1,1,1,1,1,1 },  //1
-     {2,2,2,2,2,2,2,2,2 },  //2
-     {3,3,3,3,3,3,4,4,4 },  //3
-     {4,4,4,4,4,4,1,1,1 },  //4
-     {5,5,5,5,5,5,3,3,3 }   //5
-     */
+
+//0 =Weisse 1 =Balu 2 =Gelb 3 =Gruen 4 =Rot 5 =Orangen 
+unsigned char color_data[6][9]={
+    {5,0,5,5,0,1,3,2,1},
+    {0,1,4,4,1,5,3,3,0},
+    {4,5,5,4,2,5,2,4,4},
+    {1,0,1,2,3,1,0,3,3},
+    {2,1,5,2,4,3,4,0,1},
+    {0,2,3,0,5,1,2,4,2}
 };
 
 const  char print_mode[][12][9]=
@@ -98,6 +85,137 @@ const  char print_mode[][12][9]=
     
 };
 
+int main(void)
+{
+    set_conio_terminal_mode();
+    wuerfel_print(1);
+    Top_Cross();
+    
+    while(1)
+    {
+        if(kbhit())
+        {
+            switch(getch())
+            {
+                case 'q':
+                case 'Q':
+                    return 0;
+  
+                case '0':
+                    wuerfel_print(0);
+                    break;
+                case '1':
+                    wuerfel_print(1);
+                    break;
+                case '2':
+                    wuerfel_print(2);
+                    break;
+                case '3':
+                    wuerfel_print(3);
+                    break;
+                    
+            }
+        }
+        
+    }
+}
+
+
+int Kantenstein_suchen(int Color1,int Color2)
+{
+    int kantPos=0; //kantPos=100*Schicht+10*ErsteCentrale+zweiteCentrale
+    int c1=0,c2=0;
+    
+    //Erste_schicht
+    c1= color_data[0][1]; c2= color_data[3][7];
+    if (c1==Color1 && c2==Color2) {kantPos=103;}//weiss_Grün Kantenstein
+    if (c1==Color2 && c2==Color1) {kantPos=130;}
+    c1= color_data[0][3]; c2= color_data[4][7];
+    if (c1==Color1 && c2==Color2) {kantPos=104;}//weiss_Rot Kantenstein
+    if (c1==Color2 && c2==Color1) {kantPos=140;}
+    c1= color_data[0][5]; c2= color_data[5][7];
+    if (c1==Color1 && c2==Color2) {kantPos=105;}//weiss_Orange Kantenstein
+    if (c1==Color2 && c2==Color1) {kantPos=150;}
+    c1= color_data[0][7]; c2= color_data[1][1];
+    if (c1==Color1 && c2==Color2) {kantPos=101;}//weiss_Blau Kantenstein
+    if (c1==Color2 && c2==Color1) {kantPos=110;}
+    
+    
+    //Zweite_schicht
+    c1= color_data[4][3]; c2= color_data[1][3];
+    if (c1==Color1 && c2==Color2) {kantPos=241;}//Rot_Blau Kantenstein
+    if (c1==Color2 && c2==Color1) {kantPos=214;}
+    c1= color_data[1][5]; c2= color_data[5][5];
+    if (c1==Color1 && c2==Color2) {kantPos=215;}//Blau_Orange Kantenstein
+    if (c1==Color2 && c2==Color1) {kantPos=251;}
+    c1= color_data[5][3]; c2= color_data[3][5];
+    if (c1==Color1 && c2==Color2) {kantPos=253;}//Orange_Grün Kantenstein
+    if (c1==Color2 && c2==Color1) {kantPos=235;}
+    c1= color_data[3][3]; c2= color_data[4][5];
+    if (c1==Color1 && c2==Color2) {kantPos=234;}//Grün_Rot Kantenstein
+    if (c1==Color2 && c2==Color1) {kantPos=243;}
+    
+    
+    //Dritte_schicht
+    c1= color_data[1][7]; c2= color_data[2][1];
+    if (c1==Color1 && c2==Color2) {kantPos=312;}//Blau_Gelb Kantenstein
+    if (c1==Color2 && c2==Color1) {kantPos=321;}
+    c1= color_data[5][1]; c2= color_data[2][5];
+    if (c1==Color1 && c2==Color2) {kantPos=352;}//Orange_Gelb Kantenstein
+    if (c1==Color2 && c2==Color1) {kantPos=325;}
+    c1= color_data[3][1]; c2= color_data[2][7];
+    if (c1==Color1 && c2==Color2) {kantPos=332;}//Grün_Gelb Kantenstein
+    if (c1==Color2 && c2==Color1) {kantPos=323;}
+    c1= color_data[4][1]; c2= color_data[2][3];
+    if (c1==Color1 && c2==Color2) {kantPos=342;}//Rot_Gelb Kantenstein
+    if (c1==Color2 && c2==Color1) {kantPos=324;}
+    
+    return kantPos;
+}
+
+
+int Mittelstein_suchen(int Color)
+{
+    int i;
+    int c1=0,Centrale=6;
+    for (i=0; i<=5; i++) {
+        c1= color_data[i][4];
+        if(c1==Color) Centrale=i;
+    }
+    return Centrale;
+}
+
+
+int Eckenstein_suchen(int Color1, int Color2, int Color3 )
+{
+    int eckPos=0; //EckPos= 1000*Schicht+100*ErsteCenterale+10*zweiteCenterale+dritteCentrale
+    int Color_eck=100*Color1+10*Color2+Color3;
+    
+    //Erste Schichte
+    if (Color_eck== 100*color_data[0][0]+10*color_data[4][8]+color_data[3][6])
+        eckPos=1000*1+100*0+10*4+3;
+    if (Color_eck== 100*color_data[0][2]+10*color_data[3][8]+color_data[5][6])
+        eckPos=1000*1+100*0+10*3+5;
+    if (Color_eck== 100*color_data[0][8]+10*color_data[5][8]+color_data[1][2])
+        eckPos=1000*1+100*0+10*5+1;
+    if (Color_eck== 100*color_data[0][6]+10*color_data[1][0]+color_data[4][6])
+        eckPos=1000*1+100*0+10*1+4;
+    
+    //Zweite Schichte
+    if (Color_eck== 100*color_data[2][0]+10*color_data[1][6]+color_data[4][0])
+        eckPos=1000*3+100*2+10*1+4;
+    if (Color_eck== 100*color_data[2][2]+10*color_data[1][8]+color_data[5][2])
+        eckPos=1000*3+100*2+10*1+5;
+    if (Color_eck== 100*color_data[2][8]+10*color_data[5][0]+color_data[3][2])
+        eckPos=1000*3+100*2+10*5+3;
+    if (Color_eck== 100*color_data[2][6]+10*color_data[4][2]+color_data[3][0])
+        eckPos=1000*3+100*2+10*4+3;
+    
+    return eckPos;
+    
+}
+
+
 struct termios orig_termios;
 
 void reset_terminal_mode()
@@ -130,7 +248,6 @@ int kbhit()
     return select(1, &fds, NULL, NULL, &tv);
 }
 
-
 int getch()
 {
     int r;
@@ -141,8 +258,6 @@ int getch()
         return c;
     }
 }
-
-
 
 void wuerfel_print(int mode)
 {
@@ -159,10 +274,11 @@ void wuerfel_print(int mode)
         {
             char tmp=print_mode[mode][zeile][spalte];
             if(tmp==-1)
-                printf("    ");
+                printf("   ");
             else
                 switch(color_data[tmp/9][tmp%9])
             {
+#ifdef RUN_MACOS
                 case 0:
                     printf("\033[fg0,0,0;   %d\033[;",color_data[tmp/9][tmp%9]);
                     break;
@@ -186,270 +302,35 @@ void wuerfel_print(int mode)
                 case 5:
                     printf("\033[fg255,97,0;   %d\033[;",color_data[tmp/9][tmp%9]);
                     break;
+#endif
+#ifdef RUN_EV3
+                case 0:
+                    printf("\033[1;30m   %d\033[0m",color_data[tmp/9][tmp%9]);
+                    break;
+                    
+                case 1:
+                    printf("\033[1;34m   %d\033[0m",color_data[tmp/9][tmp%9]);
+                    break;
+                    
+                case 2:
+                    printf("\033[1;33m   %d\033[0m",color_data[tmp/9][tmp%9]);
+                    break;
+                    
+                case 3:
+                    printf("\033[1;32m   %d\033[0m",color_data[tmp/9][tmp%9]);
+                    break;
+                    
+                case 4:
+                    printf("\033[1;35m   %d\033[0m",color_data[tmp/9][tmp%9]);
+                    break;
+                    
+                case 5:
+                    printf("\033[1;31m   %d\033[0m",color_data[tmp/9][tmp%9]);
+                    break;
+#endif
             }
         }
         printf("\n\r");
     }
 }
 
-
-
-void klappen()
-{
-    int i,j;
-    unsigned char temp_color_data[6][9];
-    for(i=0;i<3;i++)
-    {
-        for (j=0; j<3; j++)
-        {
-            temp_color_data[1][3*i+j]=color_data[1][3*j+(2-i)]; //
-            temp_color_data[3][3*i+j]=color_data[3][3*(2-j)+i]; //
-            temp_color_data[5][3*i+j]=color_data[2][3*(2-j)+i]; //
-            temp_color_data[2][3*(2-j)+i]=color_data[4][3*(2-i)+(2-j)];//
-            temp_color_data[4][3*(2-i)+(2-j)]=color_data[0][3*j+(2-i)];//
-            temp_color_data[0][3*j+(2-i)]=color_data[5][3*i+j];//
-        }
-    }
-    
-    int a,b;
-    for (a=0;a<6;a++)
-    {
-        for (b=0;b<9;b++)
-        {
-            color_data[a][b]=temp_color_data[a][b];
-        }
-    }
-}
-
-
-
-void drehen_unter(int dir)
-{
-    //{0ol,0om,0or,0ml,0mm,0mr,0ul,0um,0ur }, weiss {0ol,0om,0or,0ml,0mm,0mr,0ul,0um,0ur }
-    //{1ol,1om,1or,1ml,1mm,1mr,1ul,1um,1ur }, blau  {1ol,1om,1or,1ml,1mm,1mr,4ul,4um,4ur }
-    //{2ol,2om,2or,2ml,2mm,2mr,2ul,2um,2ur }, gelb  {2ul,2ml,2ol,2um,2mm,2om,2ur,2mr,2or }
-    //{3ol,3om,3or,3ml,3mm,3mr,3ul,3um,3ur }, grue  {3ol,3om,3or,3ml,3mm,3mr,5ul,5um,5ur }
-    //{4ol,4om,4or,4ml,4mm,4mr,4ul,4um,4ur }, rot   {4ol,4om,4or,4ml,4mm,4mr,3ul,3um,3ur }
-    //{5ol,5om,5or,5ml,5mm,5mr,5ul,5um,5ur }  oran  {5ol,5om,5or,5ml,5mm,5mr,1ul,1um,1ur }
-    int i,j,k;
-    unsigned char temp_color_data[6][9];
-    if (dir==1)
-    {
-        for(i=0;i<3;i++)
-        {
-            temp_color_data[5][3*0+i]=color_data[1][3*2+(2-i)];
-            temp_color_data[5][3*1+i]=color_data[5][3*1+i];
-            temp_color_data[5][3*2+i]=color_data[5][3*2+i];
-            
-            temp_color_data[1][3*0+i]=color_data[1][3*0+i];
-            temp_color_data[1][3*1+i]=color_data[1][3*1+i];
-            temp_color_data[1][3*2+(2-i)]=color_data[4][3*0+i];
-            
-            temp_color_data[4][3*0+i]=color_data[3][3*0+i];
-            temp_color_data[4][3*1+i]=color_data[4][3*1+i];
-            temp_color_data[4][3*2+i]=color_data[4][3*2+i];
-            
-            temp_color_data[3][3*0+i]=color_data[5][3*0+i];
-            temp_color_data[3][3*1+i]=color_data[3][3*1+i];
-            temp_color_data[3][3*2+i]=color_data[3][3*2+i];
-            
-            for (j=0; j<3; j++) {
-                temp_color_data[2][3*i+j]=color_data[2][3*(2-j)+i];
-                temp_color_data[0][3*i+j]=color_data[0][3*i+j];
-            }
-        }
-    }
-    else
-    {
-        for(i=0;i<3;i++)
-        {
-            temp_color_data[5][3*0+i]=color_data[3][3*0+i];
-            temp_color_data[5][3*1+i]=color_data[5][3*1+i];
-            temp_color_data[5][3*2+i]=color_data[5][3*2+i];
-            
-            temp_color_data[3][3*0+i]=color_data[4][3*0+i];
-            temp_color_data[3][3*1+i]=color_data[3][3*1+i];
-            temp_color_data[3][3*2+i]=color_data[3][3*2+i];
-            
-            temp_color_data[4][3*0+i]=color_data[1][3*2+2-i];
-            temp_color_data[4][3*1+i]=color_data[4][3*1+i];
-            temp_color_data[4][3*2+i]=color_data[4][3*2+i];
-            
-            temp_color_data[1][3*0+i]=color_data[1][3*0+i];
-            temp_color_data[1][3*1+i]=color_data[1][3*1+i];
-            temp_color_data[1][3*2+2-i]=color_data[5][3*0+i];
-            
-            for (j=0; j<3; j++)
-            {
-                temp_color_data[2][3*i+j]=color_data[2][3*j+(2-i)];
-                temp_color_data[0][3*i+j]=color_data[0][3*i+j];
-            }
-        }
-        
-    }
-    
-    int a,b;
-    for (a=0;a<6;a++)
-    {
-        for (b=0;b<9;b++)
-        {
-            color_data[a][b]=temp_color_data[a][b];
-        }
-    }
-}
-
-
-void drehen(int dir)
-{
-    int i,j;
-    unsigned char temp_color_data[6][9];
-    if(dir==1)
-    {
-        for (i=0; i<3; i++) {
-            for (j=0; j<3; j++) {
-                temp_color_data[0][3*i+j]=color_data[0][3*(2-j)+i];
-                temp_color_data[2][3*i+j]=color_data[2][3*j+(2-i)];
-                temp_color_data[4][3*i+j]=color_data[1][3*(2-i)+(2-j)];
-                temp_color_data[1][3*(2-i)+(2-j)]=color_data[5][3*i+j];
-                temp_color_data[5][3*i+j]=color_data[3][3*i+j];
-                temp_color_data[3][3*i+j]=color_data[4][3*i+j];
-            }
-        }
-    }else{
-        for (i=0; i<3; i++) {
-            for (j=0; j<3; j++) {
-                temp_color_data[0][3*i+j]=color_data[0][3*j+(2-i)];
-                temp_color_data[2][3*i+j]=color_data[2][3*(2-j)+i];
-                temp_color_data[5][3*i+j]=color_data[1][3*(2-i)+(2-j)];
-                temp_color_data[1][3*(2-i)+(2-j)]=color_data[4][3*i+j];
-                temp_color_data[4][3*i+j]=color_data[3][3*i+j];
-                temp_color_data[3][3*i+j]=color_data[5][3*i+j];
-            }
-        }
-    }
-    int a,b;
-    for (a=0;a<6;a++)
-    {
-        for (b=0;b<9;b++)
-        {
-            color_data[a][b]=temp_color_data[a][b];
-        }
-    }
-}
-
-
-void wuefel_dreh(int achse,int dir)
-{
-    switch (achse)
-    {
-        case 0:
-            klappen();
-            klappen();
-            drehen_unter(dir);
-            break;
-        case 1:
-            drehen(1);
-            klappen();
-            drehen_unter(dir);
-            break;
-        case 2:
-            drehen_unter(dir);
-            break;
-        case 3:
-            drehen(-1);
-            klappen();
-            drehen_unter(dir);
-            break;
-        case 4:
-            klappen();
-            drehen_unter(dir);
-            break;
-        case 5:
-            klappen();
-            klappen();
-            klappen();
-            drehen_unter(dir);
-            break;
-            
-        default:
-            break;
-    }
-    
-}
-
-
-
-
-int main(void)
-{
-    
-    //  color_arrary(color_data);
-    set_conio_terminal_mode();
-    
-    while(1)
-    {
-        if(kbhit())
-        {
-            switch(getch())
-            {
-                case 'q':
-                case 'Q':
-                    return 0;
-                    
-                case 'w':
-                    wuefel_dreh(0,1);
-                    break;
-                case 'W':
-                    wuefel_dreh(0,-1);
-                    break;
-                case 'b':
-                    wuefel_dreh(1,1);
-                    break;
-                case 'B':
-                    wuefel_dreh(1,-1);
-                    break;
-                case 'y':
-                    wuefel_dreh(2,1);
-                    break;
-                case 'Y':
-                    wuefel_dreh(2,-1);
-                    break;
-                case 'g':
-                    wuefel_dreh(3,1);
-                    break;
-                case 'G':
-                    wuefel_dreh(3,-1);
-                    break;
-                case 'r':
-                    wuefel_dreh(4,1);
-                    break;
-                case 'R':
-                    wuefel_dreh(4,-1);
-                    break;
-                case 'o':
-                    wuefel_dreh(5,1);
-                    break;
-                case 'O':
-                    wuefel_dreh(5,-1);
-                    break;
-                    
-                    
-                    
-                case '0':
-                    wuerfel_print(0);
-                    break;
-                case '1':
-                    wuerfel_print(1);
-                    break;
-                case '2':
-                    wuerfel_print(2);
-                    break;
-                case '3':
-                    wuerfel_print(3);
-                    break;
-                    
-            }
-        }
-        
-    }
-}

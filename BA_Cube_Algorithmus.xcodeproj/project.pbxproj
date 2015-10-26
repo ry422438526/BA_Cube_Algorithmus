@@ -8,7 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		7A4E09F71BD683E900307918 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 7A4E09F61BD683E900307918 /* main.c */; };
-		7A4E09FF1BD6840B00307918 /* Top_Cross.c in Sources */ = {isa = PBXBuildFile; fileRef = 7A4E09FD1BD6840B00307918 /* Top_Cross.c */; settings = {ASSET_TAGS = (); }; };
+		7A4E09FF1BD6840B00307918 /* Top_Cross.c in Sources */ = {isa = PBXBuildFile; fileRef = 7A4E09FD1BD6840B00307918 /* Top_Cross.c */; };
+		7AC84F211BDE387B00C40D90 /* Seiten_veraenderung.c in Sources */ = {isa = PBXBuildFile; fileRef = 7AC84F1F1BDE387B00C40D90 /* Seiten_veraenderung.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,6 +29,8 @@
 		7A4E09F61BD683E900307918 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		7A4E09FD1BD6840B00307918 /* Top_Cross.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Top_Cross.c; sourceTree = "<group>"; };
 		7A4E09FE1BD6840B00307918 /* Top_Cross.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Top_Cross.h; sourceTree = "<group>"; };
+		7AC84F1F1BDE387B00C40D90 /* Seiten_veraenderung.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Seiten_veraenderung.c; sourceTree = "<group>"; };
+		7AC84F201BDE387B00C40D90 /* Seiten_veraenderung.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Seiten_veraenderung.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +65,8 @@
 			children = (
 				7A4E09F61BD683E900307918 /* main.c */,
 				7A4E09FD1BD6840B00307918 /* Top_Cross.c */,
+				7AC84F1F1BDE387B00C40D90 /* Seiten_veraenderung.c */,
+				7AC84F201BDE387B00C40D90 /* Seiten_veraenderung.h */,
 				7A4E09FE1BD6840B00307918 /* Top_Cross.h */,
 			);
 			path = BA_Cube_Algorithmus;
@@ -123,6 +128,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7AC84F211BDE387B00C40D90 /* Seiten_veraenderung.c in Sources */,
 				7A4E09FF1BD6840B00307918 /* Top_Cross.c in Sources */,
 				7A4E09F71BD683E900307918 /* main.c in Sources */,
 			);
@@ -241,6 +247,7 @@
 				7A4E09FC1BD683E900307918 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
