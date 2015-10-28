@@ -9,10 +9,11 @@
 #include <stdio.h>
 #include "Top_Cross.h"
 #include "Seiten_veraenderung.h"
+#include "Color_search.h"
 
 int Top_Cross()
 {
-    int Getpos=0;
+    int Getpos_k=0;
     int color_kanten[4]={1,4,3,5};
     int i;
     
@@ -20,8 +21,8 @@ int Top_Cross()
     {
         change_topface(0);
         change_rightface(i);
-        Getpos=Kantenstein_suchen(0, color_kanten[i]);
-        switch (Getpos) {
+        Getpos_k=Kantenstein_suchen(0, color_kanten[i]);
+        switch (Getpos_k) {
             case 103:
                 us_dreh(1, 90);
                 break;
@@ -118,5 +119,26 @@ int Top_Cross()
                 break;
         }
     }
+    change_topface(0);
+    change_rightface(5);
+    int Getpos_k1=0;
+    Getpos_k1=Kantenstein_suchen(0, 5);
+    switch (Getpos_k1) {
+        case 101:
+            us_dreh(-1, 90);
+            break;
+        case 103:
+            us_dreh(1, 90);
+            break;
+        case 104:
+            us_dreh(1, 180);
+            break;
+        case 105:
+            break;
+            
+        default:
+            break;
+    }
+    change_topface(0);
     return 0;
 }

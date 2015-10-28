@@ -8,8 +8,9 @@
 
 #include "Seiten_veraenderung.h"
 #include <stdio.h>
+#include "main.h"
 
-unsigned char color_data[6][9];
+
 
 void change_topface(int center_color)
 {   int i;
@@ -52,7 +53,7 @@ void change_rightface(int rightface)
     int i;
     for (i=0; i<=5; i++) {
         if (color_data[i][4]==rightface) {
-            switch (1) {
+            switch (i) {
              case 1://vorne Seite
                    drehen(-1);
                    break;
