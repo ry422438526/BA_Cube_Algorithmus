@@ -75,6 +75,8 @@ void wuerfel_print(int mode)
     setenv("XcodeColor", "YES", 0);
     
     printf("\n");
+    printf(".........................................");
+    printf("\n");
     for(zeile=0;zeile<12;zeile++)
     {
         for(spalte=0;spalte<9;spalte++)

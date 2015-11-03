@@ -10,7 +10,28 @@
 #include <stdio.h>
 #include "main.h"
 
-
+void change_backface(int backface)
+{
+    int i;
+    for (i=0; i<=5; i++) {
+        if (color_data[i][4]==backface) {
+            switch (i) {
+                case 1://vorne Seite
+                    drehen(1);
+                    drehen(1);
+                    break;
+                case 5://hintere Seite
+                    drehen(-1);
+                    break;
+                case 4://linke Seite
+                    drehen(1);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+}
 
 void change_topface(int center_color)
 {   int i;
@@ -230,7 +251,7 @@ void fs_dreh(int dir,int dreh_Angel_f)                          //vornen_Seite
     int i;
     drehen(1);
     klappen();
-    for (i=0; i<=dreh_Angel_f/90; i++) {
+    for (i=0; i<dreh_Angel_f/90; i++) {
         drehen_unter(dir);
     }
 }

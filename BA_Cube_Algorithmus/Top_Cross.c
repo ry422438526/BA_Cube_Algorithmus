@@ -10,6 +10,7 @@
 #include "Top_Cross.h"
 #include "Seiten_veraenderung.h"
 #include "Color_search.h"
+#include "print_mode.h"
 
 int Top_Cross()
 {
@@ -20,7 +21,9 @@ int Top_Cross()
     for(i=0;i<=3;i++)
     {
         change_topface(0);
-        change_rightface(i);
+        wuerfel_print(1);
+        change_rightface(color_kanten[i]);
+        wuerfel_print(1);
         Getpos_k=Kantenstein_suchen(0, color_kanten[i]);
         switch (Getpos_k) {
             case 103:
@@ -31,93 +34,200 @@ int Top_Cross()
                 bs_dreh(-1, 90);
                 break;
             case 104:
-                us_dreh(1, 180);    //obere Seite zwei mal im gegenuhrzeigersinn drehen
+                if (i==0)
+                {
+                    us_dreh(1, 180);
+                }else{
+                    ls_dreh(1, 180);
+                    wuerfel_print(1);
+                    rs_dreh(1, 180);
+                    wuerfel_print(1);
+                    rs_dreh(1, 180);
+                    wuerfel_print(1);
+                }
                 break;
             case 140:
                 ls_dreh(1, 90);
                 fs_dreh(-1, 90);
-                bs_dreh(-1, 90);
+                fs_dreh(1, 90);
+                bs_dreh(1, 180);
+
                 break;
             case 105:
                 break;
             case 150:
-                us_dreh(-1, 90);
-                ls_dreh(-1, 90);
-                fs_dreh(-1, 90);
+                
+                if (i==0) {
+                    rs_dreh(-1, 90);
+                    fs_dreh(-1, 90);
+                    fs_dreh(-1, 90);
+                }else{
+                    rs_dreh(-1, 180);
+                    ls_dreh(-1, 90);
+                    fs_dreh(-1, 90);
+                    fs_dreh(1, 90);
+                    rs_dreh(1, 90);
+                }
                 break;
             case 101:
-                us_dreh(-1, 90);
+                if (i==0)
+                {
+                    us_dreh(-1, 90);
+                }else{
+                    fs_dreh(1, 180);
+                    rs_dreh(1, 90);
+                    fs_dreh(1, 180);
+                }
+
                 break;
             case 110:
                 fs_dreh(1, 90);
                 fs_dreh(1, 90);
+                
                 break;
             case 241:
-                fs_dreh(1, 90);
-                ls_dreh(-1, 90);
+                if (i==0) {
+                    fs_dreh(1, 90);
+                    ls_dreh(-1,90);
+                }else{
+                    fs_dreh(-1, 90);
+                    rs_dreh(1, 90);
+                    ls_dreh(1, 90);
+                    fs_dreh(1, 180);
+                }
                 break;
             case 214:
-                fs_dreh(1, 180);
-                fs_dreh(1, 90);
+                if (i<2) {
+                    fs_dreh(1, 180);
+                    fs_dreh(1, 90);
+                }else{
+                    fs_dreh(1, 180);
+                    fs_dreh(1, 90);
+                    rs_dreh(1, 180);
+                }
                 break;
-            case 215:
+            case 215:      //pruefen
                 rs_dreh(1, 90);
                 break;
             case 251:
-                fs_dreh(-1, 90);
-                ls_dreh(-1, 90);
+                if (i==0) {
+                    fs_dreh(1, 90);
+                    rs_dreh(1, 90);
+                    fs_dreh(1, 180);
+                }else{
+                    fs_dreh(1, 90);
+                    rs_dreh(1, 90);
+                    ls_dreh(-1, 90);
+                    fs_dreh(1, 180);
+                }
+
                 break;
-            case 253:
+            case 253:      //pruefen
+                if (i<2) {
+                    rs_dreh(1, 180);
+                    fs_dreh(1, 90);
+                    bs_dreh(1, 90);
+                    bs_dreh(1, 180);
+                }else{
+                    rs_dreh(1, 180);
+                    fs_dreh(1, 90);
+                    bs_dreh(1, 90);
+                    rs_dreh(-1, 90);
+                    bs_dreh(1, 180);
+                }
+                break;
+            case 235:     //pruefen
                 rs_dreh(-1, 90);
                 break;
-            case 235:
-                bs_dreh(1, 90);
-                ls_dreh(1, 90);
+            case 234:     //pruefen
+                if (i==0) {
+                    bs_dreh(-1, 180);
+                    bs_dreh(-1, 90);
+                }else{
+                    bs_dreh(-1, 180);
+                    bs_dreh(-1, 90);
+                    rs_dreh(1, 180);
+                }
                 break;
-            case 234:
-                bs_dreh(-1, 90);
-                bs_dreh(-1, 90);
+            case 243:     //pruefen
+                if (i==0) {
+                    bs_dreh(1, 90);
+                    rs_dreh(-1, 90);
+                    bs_dreh(-1, 180);
+                }else{
+                    bs_dreh(1, 90);
+                    rs_dreh(-1, 90);
+                    bs_dreh(-1, 180);
+                    fs_dreh(-1, 90);
+                }
                 break;
-            case 243:
-                bs_dreh(-1, 90);
-                ls_dreh(1, 90);
+            case 312:     //pruefen
+                if (i==0) {
+                    fs_dreh(-1, 90);
+                    fs_dreh(1, 90);
+                }else{
+                    fs_dreh(-1, 90);
+                    fs_dreh(1, 90);
+                    rs_dreh(1, 90);
+                }
+                
                 break;
-            case 312:
-                fs_dreh(-1, 90);
-                fs_dreh(1, 90);
+            case 321:      //pruefen
+                    ds_dreh(1, 90);
+                    rs_dreh(1, 180);
+
                 break;
-            case 321:
-                us_dreh(1, 90);
+            case 352:      //pruefen
+                if (i<2) {
+                    ds_dreh(-1, 90);
+                    fs_dreh(-1, 90);
+                    fs_dreh(1, 90);
+                }else{
+                    ds_dreh(-1, 90);
+                    fs_dreh(-1, 90);
+                    fs_dreh(1, 90);
+                    rs_dreh(1, 90);
+                }
+                break;
+            case 325:        //pruefen
                 rs_dreh(1, 180);
                 break;
-            case 352:
+            case 323:       //pruefen
                 ds_dreh(-1, 90);
-                fs_dreh(-1, 90);
-                fs_dreh(1, 90);
-                break;
-            case 325:
                 rs_dreh(1, 180);
                 break;
-            case 323:
-                ds_dreh(-1, 90);
-                rs_dreh(-1, 180);
+            case 332:       //pruefen
+                if (i==0) {
+                    bs_dreh(1, 90);
+                    bs_dreh(-1, 90);
+                }else{
+                    bs_dreh(1, 90);
+                    bs_dreh(-1, 90);
+                    rs_dreh(-1, 90);
+                }
                 break;
-            case 332:
-                bs_dreh(1, 90);
-                bs_dreh(-1, 90);
+            case 342:       //pruefen
+                if (i<2) {
+                    ds_dreh(1, 90);
+                    fs_dreh(-1, 90);
+                    fs_dreh(1, 90);
+                }else{
+                    ds_dreh(1, 90);
+                    fs_dreh(-1, 90);
+                    fs_dreh(1, 90);
+                    rs_dreh(1, 90);
+                }
+
                 break;
-            case 342:
-                ds_dreh(1, 90);
-                fs_dreh(-1, 90);
-                fs_dreh(1, 90);
-                break;
-            case 324:
+            case 324:       //pruefen
                 ds_dreh(1, 180);
                 rs_dreh(1, 180);
+ 
                 break;
             default:
                 break;
         }
+        printf("Getpos_k=%d",Getpos_k);
     }
     change_topface(0);
     change_rightface(5);
@@ -138,7 +248,7 @@ int Top_Cross()
             
         default:
             break;
-    }
-    change_topface(0);
+    }                             //überprüfen
+    wuerfel_print(1);
     return 0;
 }
